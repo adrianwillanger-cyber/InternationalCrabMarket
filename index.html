@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Crab Export / Import Dashboard</title>
+<meta name="description" content="Global crab trade dashboard — 16 species, HTS codes, pricing, exporters, importers, trade flows. Data: 2024–2025.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ============================  TOKENS  ============================== */
+:root {
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem;
+  --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:2.5rem;
+  --space-12:3rem; --space-16:4rem;
+  --radius-sm:.375rem; --radius-md:.5rem; --radius-lg:.75rem; --radius-xl:1rem; --radius-full:9999px;
+  --transition-interactive:180ms cubic-bezier(0.16,1,0.3,1);
+}
+:root,[data-theme="light"]{
+  --color-bg:#f4f6f8; --color-surface:#ffffff; --color-surface-2:#f0f4f7;
+  --color-surface-offset:#e8edf2; --color-divider:#d5dde6; --color-border:#cad3dc;
+  --color-text:#1a2433; --color-text-muted:#4d6278; --color-text-faint:#8fa3b8;
+  --color-text-inverse:#f4f6f8;
+  --color-primary:#0078a0; --color-primary-hover:#005f80; --color-primary-active:#004560;
+  --color-primary-highlight:#cce8f4;
+  --color-success:#0e7a52; --color-success-hover:#085e3e; --color-success-highlight:#c8ead9;
+  --color-warning:#a05c00; --color-warning-hover:#7a4500; --color-warning-highlight:#ffeacc;
+  --color-error:#c0392b; --color-error-hover:#922b21; --color-error-highlight:#fde0dd;
+  --color-gold:#c8871a; --color-blue:#1a6bb5; --color-purple:#6842c2;
+  --color-teal:#00897b; --color-orange:#d45200; --color-pink:#c2185b;
+  --shadow-sm:0 1px 3px rgba(26,36,51,.07); --shadow-md:0 4px 12px rgba(26,36,51,.10);
+  --shadow-lg:0 12px 32px rgba(26,36,51,.13);
+}
+[data-theme="dark"]{
+  --color-bg:#0e1420; --color-surface:#141d2b; --color-surface-2:#1a2335;
+  --color-surface-offset:#1f2a3e; --color-divider:#263347; --color-border:#2e3e57;
+  --color-text:#d0dcea; --color-text-muted:#7a94ad; --color-text-faint:#445a70;
+  --color-text-inverse:#0e1420;
+  --color-primary:#29b0d8; --color-primary-hover:#1a94b8; --color-primary-active:#127896;
+  --color-primary-highlight:#1a3345;
+  --color-success:#2ecc85; --color-success-hover:#20b070; --color-success-highlight:#14332a;
+  --color-warning:#f0a040; --color-warning-hover:#d88a28; --color-warning-highlight:#3a2810;
+  --color-error:#e06060; --color-error-hover:#c84848; --color-error-highlight:#3a1818;
+  --color-gold:#e8b640; --color-blue:#5a9fd4; --color-purple:#9e78e8;
+  --color-teal:#26c6a6; --color-orange:#f07842; --color-pink:#f06292;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3); --shadow-md:0 4px 12px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.5);
+}
+/* ============================  RESET  ============================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;height:100%;overflow:hidden}
+body{min-height:100dvh;height:100%;font-family:'Inter',system-ui,sans-serif;font-size:var(--text-sm);color:var(--color-text);background:var(--color-bg);overflow:hidden}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+table{border-collapse:collapse;width:100%}
+img,svg{display:block}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+/* ============================  LAYOUT  ============================== */
+.dashboard{display:grid;grid-template-columns:220px 1fr;grid-template-rows:auto 1fr;height:100dvh;overflow:hidden}
+.sidebar{grid-row:1/-1;background:var(--color-surface);border-right:1px solid var(--color-border);display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.header{grid-column:2;display:flex;align-items:center;justify-content:space-between;padding:0 var(--space-6);height:52px;background:var(--color-surface);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:10;flex-shrink:0}
+.main{grid-column:2;overflow-y:auto;overscroll-behavior:contain;padding:var(--space-5) var(--space-6);background:var(--color-bg)}
+/* ============================  SIDEBAR  ============================== */
+.sidebar-header{padding:var(--space-4) var(--space-4) var(--space-3);border-bottom:1px solid var(--color-divider);flex-shrink:0}
+.logo{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
+.logo-mark{width:34px;height:34px;flex-shrink:0}
+.logo-text{font-size:var(--text-sm);font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.logo-text span{display:block;font-size:var(--text-xs);font-weight:400;color:var(--color-text-muted);letter-spacing:0}
+.search-box{position:relative}
+.search-box input{width:100%;padding:var(--space-2) var(--space-3) var(--space-2) var(--space-7);background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--text-xs);color:var(--color-text);outline:none;transition:border-color var(--transition-interactive),background var(--transition-interactive)}
+.search-box input:focus{border-color:var(--color-primary);background:var(--color-surface)}
+.search-box input::placeholder{color:var(--color-text-faint)}
+.search-box svg{position:absolute;left:var(--space-2);top:50%;transform:translateY(-50%);color:var(--color-text-faint);pointer-events:none}
+.nav-section{padding:var(--space-2) var(--space-3)}
+.nav-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-faint);padding:var(--space-2) var(--space-2) var(--space-1)}
+.nav-item{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-2);border-radius:var(--radius-md);font-size:var(--text-xs);font-weight:500;color:var(--color-text-muted);cursor:pointer;transition:background var(--transition-interactive),color var(--transition-interactive);user-select:none;border:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--color-surface-2);color:var(--color-text)}
+.nav-item.active{background:var(--color-primary-highlight);color:var(--color-primary)}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nav-count{margin-left:auto;background:var(--color-surface-offset);padding:1px var(--space-2);border-radius:var(--radius-full);font-size:10px;font-weight:600;color:var(--color-text-muted);font-variant-numeric:tabular-nums}
+.sidebar-footer{margin-top:auto;padding:var(--space-3) var(--space-4);border-top:1px solid var(--color-divider);font-size:var(--text-xs);color:var(--color-text-faint)}
+/* ============================  HEADER  ============================== */
+.header-title h1{font-size:var(--text-base);font-weight:700;line-height:1.2;letter-spacing:-.01em}
+.header-title p{font-size:var(--text-xs);color:var(--color-text-muted);max-width:none;white-space:nowrap}
+.header-actions{display:flex;align-items:center;gap:var(--space-2)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);font-size:var(--text-xs);font-weight:600;cursor:pointer;transition:all var(--transition-interactive);text-decoration:none;white-space:nowrap}
+.btn-ghost{background:transparent;border:1px solid var(--color-border);color:var(--color-text-muted)}
+.btn-ghost:hover{background:var(--color-surface-2);color:var(--color-text);border-color:var(--color-text-faint)}
+.theme-toggle{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-md);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition-interactive)}
+.theme-toggle:hover{background:var(--color-surface-2);color:var(--color-text)}
+/* ============================  TABS  ============================== */
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-5)}
+.tab{padding:var(--space-2) var(--space-4);font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all var(--transition-interactive);margin-bottom:-1px}
+.tab:hover{color:var(--color-text)}
+.tab.active{color:var(--color-primary);border-bottom-color:var(--color-primary)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+/* ============================  KPI  ============================== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--space-3);margin-bottom:var(--space-5)}
+.kpi-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);box-shadow:var(--shadow-sm)}
+.kpi-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);margin-bottom:var(--space-2)}
+.kpi-value{font-size:var(--text-lg);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:2px;font-variant-numeric:tabular-nums lining-nums}
+.kpi-sub{font-size:var(--text-xs);color:var(--color-text-faint)}
+.kpi-accent{color:var(--color-primary)}
+/* ============================  PANEL  ============================== */
+.panel{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:var(--space-5)}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-5);border-bottom:1px solid var(--color-divider)}
+.panel-title{font-size:var(--text-sm);font-weight:700;letter-spacing:-.01em}
+.panel-sub{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:2px}
+.panel-body{padding:var(--space-4) var(--space-5)}
+/* ============================  TABLE  ============================== */
+.table-wrap{overflow-x:auto;overscroll-behavior:contain}
+.data-table{font-size:var(--text-xs);font-variant-numeric:tabular-nums}
+.data-table thead th{padding:var(--space-2) var(--space-3);text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);border-bottom:1px solid var(--color-divider);white-space:nowrap;position:sticky;top:0;background:var(--color-surface);z-index:1;cursor:pointer;user-select:none;transition:color var(--transition-interactive)}
+.data-table thead th:hover{color:var(--color-text)}
+.data-table thead th.sort-asc::after{content:' ↑';color:var(--color-primary)}
+.data-table thead th.sort-desc::after{content:' ↓';color:var(--color-primary)}
+.data-table tbody tr{border-bottom:1px solid var(--color-divider);cursor:pointer;transition:background var(--transition-interactive)}
+.data-table tbody tr:last-child{border-bottom:none}
+.data-table tbody tr:hover{background:var(--color-surface-2)}
+.data-table tbody tr.selected{background:var(--color-primary-highlight)}
+.data-table td{padding:var(--space-2) var(--space-3);vertical-align:middle}
+.data-table td.num{text-align:right}
+/* ============================  BADGES / TAGS  ============================== */
+.badge{display:inline-flex;align-items:center;padding:2px var(--space-2);border-radius:var(--radius-full);font-size:10px;font-weight:600;white-space:nowrap}
+.badge-shell{background:color-mix(in srgb,var(--color-warning) 15%,transparent);color:var(--color-warning)}
+.badge-meat{background:color-mix(in srgb,var(--color-teal) 15%,transparent);color:var(--color-teal)}
+.badge-live{background:color-mix(in srgb,var(--color-success) 15%,transparent);color:var(--color-success)}
+.badge-frozen{background:color-mix(in srgb,var(--color-blue) 15%,transparent);color:var(--color-blue)}
+.badge-fresh{background:color-mix(in srgb,var(--color-primary) 12%,transparent);color:var(--color-primary)}
+.sus-sustainable{color:var(--color-success)}
+.sus-watch{color:var(--color-warning)}
+.sus-concern{color:var(--color-error)}
+.tag{display:inline-flex;align-items:center;padding:2px var(--space-2);border-radius:var(--radius-full);font-size:10px;font-weight:500;white-space:nowrap}
+.tag-king{background:color-mix(in srgb,var(--color-gold) 15%,transparent);color:var(--color-gold)}
+.tag-snow{background:color-mix(in srgb,var(--color-blue) 15%,transparent);color:var(--color-blue)}
+.tag-dungeness{background:color-mix(in srgb,var(--color-orange) 15%,transparent);color:var(--color-orange)}
+.tag-swimming{background:color-mix(in srgb,var(--color-primary) 15%,transparent);color:var(--color-primary)}
+.tag-stone{background:color-mix(in srgb,var(--color-purple) 15%,transparent);color:var(--color-purple)}
+.tag-mud{background:color-mix(in srgb,var(--color-success) 15%,transparent);color:var(--color-success)}
+.tag-blue{background:color-mix(in srgb,var(--color-teal) 15%,transparent);color:var(--color-teal)}
+.tag-specialty{background:color-mix(in srgb,var(--color-pink) 15%,transparent);color:var(--color-pink)}
+.tag-meat{background:color-mix(in srgb,var(--color-teal) 15%,transparent);color:var(--color-teal)}
+.hts-code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:10px;color:var(--color-primary);background:var(--color-primary-highlight);padding:2px var(--space-2);border-radius:var(--radius-sm);white-space:nowrap}
+.hts-na{font-size:10px;color:var(--color-text-faint)}
+.species-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
+.species-badge{display:inline-flex;align-items:center;gap:var(--space-2);font-weight:600}
+.species-latin{font-style:italic;color:var(--color-text-muted);font-size:10px}
+.delta-pos{color:var(--color-success)}
+.delta-neg{color:var(--color-error)}
+.origin-tag{font-size:10px;padding:1px var(--space-2);border-radius:var(--radius-sm);background:var(--color-surface-offset);color:var(--color-text-muted)}
+/* ============================  DETAIL PANEL  ============================== */
+.content-grid{display:grid;grid-template-columns:1fr 320px;gap:var(--space-4)}
+.detail-panel{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;height:fit-content;box-shadow:var(--shadow-sm)}
+.select-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;color:var(--color-text-faint);text-align:center;padding:var(--space-8)}
+.select-prompt svg{margin-bottom:var(--space-3);opacity:.35}
+.select-prompt p{font-size:var(--text-xs);max-width:200px}
+.detail-header{padding:var(--space-4) var(--space-4);border-bottom:1px solid var(--color-divider)}
+.detail-species-name{font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-1)}
+.detail-latin{font-style:italic;font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-3)}
+.detail-hts{font-family:'JetBrains Mono',monospace;font-size:var(--text-xs);color:var(--color-primary);background:var(--color-primary-highlight);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);display:inline-block;margin-bottom:var(--space-2)}
+.highlight-bar{height:3px;border-radius:99px;width:100%;margin-top:var(--space-2)}
+.detail-section{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider)}
+.detail-section:last-child{border-bottom:none}
+.detail-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-2)}
+.detail-value{font-size:var(--text-xs);color:var(--color-text);line-height:1.5;max-width:none}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2)}
+.stat-item{background:var(--color-surface-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md)}
+.stat-val{font-size:var(--text-sm);font-weight:700;color:var(--color-text);font-variant-numeric:tabular-nums}
+.stat-lab{font-size:10px;color:var(--color-text-faint);margin-top:1px}
+/* ============================  CHARTS  ============================== */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-5)}
+.chart-tall{height:240px;position:relative;width:100%}
+.chart-short{height:180px;position:relative;width:100%}
+/* ============================  FILTERS  ============================== */
+.filters-bar{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-4);flex-wrap:wrap}
+.filter-label{font-size:var(--text-xs);color:var(--color-text-faint)}
+.filter-chip{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:500;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition-interactive)}
+.filter-chip:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.filter-chip.active{background:var(--color-primary-highlight);border-color:var(--color-primary);color:var(--color-primary);font-weight:600}
+/* ============================  TRADE FLOW  ============================== */
+.trade-row-bar{height:4px;border-radius:99px;background:var(--color-primary);opacity:.7}
+/* ============================  MISC  ============================== */
+.empty-state{text-align:center;padding:var(--space-8);color:var(--color-text-faint)}
+.empty-state svg{margin:0 auto var(--space-3);opacity:.4}
+.empty-title{font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-1)}
+.empty-sub{font-size:var(--text-xs)}
+.flag{font-size:14px;line-height:1}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--color-border);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--color-text-faint)}
+.attribution{font-size:var(--text-xs);color:var(--color-text-faint);padding-top:var(--space-4);border-top:1px solid var(--color-divider);margin-top:var(--space-2)}
+.attribution a{color:var(--color-primary);text-decoration:none}
+.attribution a:hover{text-decoration:underline}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn 220ms ease both}
+@media(max-width:1100px){.content-grid{grid-template-columns:1fr}.charts-row{grid-template-columns:1fr}}
+@media(max-width:768px){.dashboard{grid-template-columns:1fr}.sidebar{display:none}.header,.main{grid-column:1}}
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Crab Trade logo">
+        <rect width="34" height="34" rx="7" fill="var(--color-primary)"/>
+        <path d="M7 21c0-3.3 2.4-5.8 4.8-6.8l.9-3.8h8.6l.9 3.8C24.6 15.2 27 17.7 27 21" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12.5" cy="10.5" r="1.4" fill="white"/>
+        <circle cx="21.5" cy="10.5" r="1.4" fill="white"/>
+        <path d="M5 18.5l-2-2.8M29 18.5l2-2.8M7 23l-2.5 2.5M27 23l2.5 2.5M17 21v3.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M13.5 25h7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">CrabTrade<span>Global Market Dashboard</span></div>
+    </div>
+    <div class="search-box">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="sidebarSearch" placeholder="Species, HTS, country…" autocomplete="off">
+    </div>
+  </div>
+
+  <nav class="nav-section">
+    <div class="nav-label">Views</div>
+    <button class="nav-item active" data-view="overview">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" data-view="species">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v4l3 3"/></svg>
+      Species &amp; HTS
+    </button>
+    <button class="nav-item" data-view="trade">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      Trade Flows
+    </button>
+    <button class="nav-item" data-view="countries">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      Countries
+    </button>
+    <button class="nav-item" data-view="prices">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Price Trends
+    </button>
+  </nav>
+
+  <nav class="nav-section">
+    <div class="nav-label">Filter by Category</div>
+    <button class="nav-item" data-filter="all">
+      <span class="nav-dot" style="background:var(--color-primary)"></span>All Species
+      <span class="nav-count" id="navAll">16</span>
+    </button>
+    <button class="nav-item" data-filter="king">
+      <span class="nav-dot" style="background:var(--color-gold)"></span>King Crab
+      <span class="nav-count">5</span>
+    </button>
+    <button class="nav-item" data-filter="snow">
+      <span class="nav-dot" style="background:var(--color-blue)"></span>Snow Crab
+      <span class="nav-count">1</span>
+    </button>
+    <button class="nav-item" data-filter="dungeness">
+      <span class="nav-dot" style="background:var(--color-orange)"></span>Dungeness
+      <span class="nav-count">1</span>
+    </button>
+    <button class="nav-item" data-filter="swimming">
+      <span class="nav-dot" style="background:var(--color-primary)"></span>Swimming Crab
+      <span class="nav-count">2</span>
+    </button>
+    <button class="nav-item" data-filter="specialty">
+      <span class="nav-dot" style="background:var(--color-pink)"></span>Specialty
+      <span class="nav-count">7</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div>Data: 2024–2025</div>
+    <div style="margin-top:2px">Sources: IndexBox · Tridge · NOAA · FAO</div>
+  </div>
+</aside>
+
+<!-- ===================== HEADER ===================== -->
+<header class="header">
+  <div class="header-title">
+    <h1 id="mainTitle">International Crab Export / Import Dashboard</h1>
+    <p id="mainSubtitle">16 species · Global market $34.8B · 386M kg traded · 2024–2025</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" id="exportBtn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV
+    </button>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== MAIN ===================== -->
+<main class="main" id="mainContent">
+
+  <!-- TAB BAR -->
+  <div class="tab-bar" id="tabBar">
+    <button class="tab active" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="species">Species &amp; HTS</button>
+    <button class="tab" data-tab="trade">Trade Flows</button>
+    <button class="tab" data-tab="countries">Countries</button>
+    <button class="tab" data-tab="prices">Price Trends</button>
+  </div>
+
+  <!-- ===== TAB: OVERVIEW ===== -->
+  <div class="tab-panel active" id="panel-overview">
+    <!-- Global KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Global Market Value</div>
+        <div class="kpi-value kpi-accent">$34.8B</div>
+        <div class="kpi-sub">2025 estimate</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Trade Volume</div>
+        <div class="kpi-value">386M kg</div>
+        <div class="kpi-sub">All species combined</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Blended Avg Price</div>
+        <div class="kpi-value">$18.4/kg</div>
+        <div class="kpi-sub">Volume-weighted</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Active Trade Routes</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-sub">Origin → destination pairs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Species Tracked</div>
+        <div class="kpi-value">16</div>
+        <div class="kpi-sub">Across HTS 03.06 &amp; 16.05</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Highest Price</div>
+        <div class="kpi-value" style="color:var(--color-gold)">$62/kg</div>
+        <div class="kpi-sub">Crystal Crab (Australia)</div>
+      </div>
+    </div>
+
+    <!-- Market size + top species value charts -->
+    <div class="charts-row">
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div><div class="panel-title">Global Market Size</div><div class="panel-sub">$B value &amp; volume (million kg) 2018–2025</div></div></div>
+        <div class="panel-body"><div class="chart-tall"><canvas id="marketSizeChart"></canvas></div></div>
+      </div>
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div><div class="panel-title">Species by Trade Value</div><div class="panel-sub">Total value $B — top 8 species</div></div></div>
+        <div class="panel-body"><div class="chart-tall"><canvas id="speciesValueChart"></canvas></div></div>
+      </div>
+    </div>
+
+    <!-- Top exporters / importers mini tables -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-top:var(--space-4)">
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div class="panel-title">Top Exporters</div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="overviewExporterTable">
+            <thead><tr><th>Country</th><th>Top Species</th><th class="num">Vol (t)</th><th class="num">$B</th><th class="num">YoY</th></tr></thead>
+            <tbody id="overviewExporterBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div class="panel-title">Top Importers</div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="overviewImporterTable">
+            <thead><tr><th>Country</th><th>Top Species</th><th class="num">Vol (t)</th><th class="num">$B</th><th class="num">YoY</th></tr></thead>
+            <tbody id="overviewImporterBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: SPECIES & HTS ===== -->
+  <div class="tab-panel" id="panel-species">
+    <div class="filters-bar">
+      <span class="filter-label">Category:</span>
+      <button class="filter-chip active" data-sp-filter="all">All (16)</button>
+      <button class="filter-chip" data-sp-filter="king">King Crab</button>
+      <button class="filter-chip" data-sp-filter="snow">Snow</button>
+      <button class="filter-chip" data-sp-filter="dungeness">Dungeness</button>
+      <button class="filter-chip" data-sp-filter="swimming">Swimming</button>
+      <button class="filter-chip" data-sp-filter="specialty">Specialty</button>
+    </div>
+    <div class="content-grid">
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header">
+          <div><div class="panel-title">Species Reference</div><div class="panel-sub">Click any row to view details · <span id="spRowCount">16 species</span></div></div>
+        </div>
+        <div class="table-wrap" style="max-height:560px;overflow-y:auto;overscroll-behavior:contain">
+          <table class="data-table" id="speciesTable">
+            <thead>
+              <tr>
+                <th data-col="common">Common Name</th>
+                <th data-col="latin">Latin Name</th>
+                <th data-col="hts">HTS Code</th>
+                <th data-col="category">Category</th>
+                <th data-col="avgPricePerKg" class="num">$/kg</th>
+                <th data-col="globalVolumeKTons" class="num">Vol (kt)</th>
+                <th data-col="sustainability">Status</th>
+                <th data-col="yoyPct" class="num">YoY%</th>
+              </tr>
+            </thead>
+            <tbody id="speciesBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="detail-panel" id="detailPanel">
+        <div id="detailContent">
+          <div class="select-prompt">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+            <p>Select a species to view full detail, pricing, and trade data</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: TRADE FLOWS ===== -->
+  <div class="tab-panel" id="panel-trade">
+    <div class="filters-bar">
+      <span class="filter-label">Species:</span>
+      <button class="filter-chip active" data-tf-filter="all">All</button>
+      <button class="filter-chip" data-tf-filter="Red King Crab">Red King</button>
+      <button class="filter-chip" data-tf-filter="Snow Crab (Opilio)">Snow</button>
+      <button class="filter-chip" data-tf-filter="Dungeness Crab">Dungeness</button>
+      <button class="filter-chip" data-tf-filter="Blue Swimming Crab">Blue Swimming</button>
+      <button class="filter-chip" data-tf-filter="Blue Crab">Blue Crab</button>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div><div class="panel-title">Trade Flow Records</div><div class="panel-sub" id="tradeSubtitle">All species · origin → destination · 2024–2025</div></div>
+        <span id="tradeRowCount" style="font-size:var(--text-xs);color:var(--color-text-faint)"></span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="tradeTable">
+          <thead>
+            <tr>
+              <th data-col="species">Species</th>
+              <th data-col="origin">Origin</th>
+              <th data-col="destination">Destination</th>
+              <th data-col="form">Form</th>
+              <th data-col="volumeKg" class="num">Volume (kg)</th>
+              <th data-col="valueMillion" class="num">Value ($M)</th>
+              <th data-col="pricePerKg" class="num">$/kg</th>
+              <th data-col="marketSharePct" class="num">Mkt Share%</th>
+              <th data-col="yoyChangePct" class="num">YoY%</th>
+              <th data-col="year" class="num">Year</th>
+            </tr>
+          </thead>
+          <tbody id="tradeBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: COUNTRIES ===== -->
+  <div class="tab-panel" id="panel-countries">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div><div class="panel-title">Top Exporters</div><div class="panel-sub">14 countries · ranked by volume</div></div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="exporterTable">
+            <thead><tr>
+              <th data-col="country">Country</th>
+              <th data-col="topSpecies">Top Species</th>
+              <th data-col="totalVolumeTons" class="num">Volume (t)</th>
+              <th data-col="totalValueBillion" class="num">Value ($B)</th>
+              <th data-col="pricePerKgAvg" class="num">$/kg</th>
+              <th data-col="shareOfGlobal" class="num">Share%</th>
+              <th data-col="yoyPct" class="num">YoY%</th>
+            </tr></thead>
+            <tbody id="exporterBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header"><div><div class="panel-title">Top Importers</div><div class="panel-sub">12 countries · ranked by volume</div></div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="importerTable">
+            <thead><tr>
+              <th data-col="country">Country</th>
+              <th data-col="topSpecies">Top Species</th>
+              <th data-col="totalVolumeTons" class="num">Volume (t)</th>
+              <th data-col="totalValueBillion" class="num">Value ($B)</th>
+              <th data-col="pricePerKgAvg" class="num">$/kg</th>
+              <th data-col="shareOfGlobal" class="num">Share%</th>
+              <th data-col="yoyPct" class="num">YoY%</th>
+            </tr></thead>
+            <tbody id="importerBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:var(--space-4)">
+      <div class="charts-row" style="margin-bottom:0">
+        <div class="panel" style="margin-bottom:0">
+          <div class="panel-header"><div class="panel-title">Exporter Market Share</div></div>
+          <div class="panel-body"><div class="chart-tall"><canvas id="exporterShareChart"></canvas></div></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="panel-header"><div class="panel-title">Importer Market Share</div></div>
+          <div class="panel-body"><div class="chart-tall"><canvas id="importerShareChart"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: PRICE TRENDS ===== -->
+  <div class="tab-panel" id="panel-prices">
+    <div class="panel">
+      <div class="panel-header">
+        <div><div class="panel-title">Species Price Trend</div><div class="panel-sub">$/kg — Mar 2024 through Mar 2025</div></div>
+      </div>
+      <div class="panel-body"><div style="height:320px;position:relative"><canvas id="priceTrendChart"></canvas></div></div>
+    </div>
+    <div class="kpi-grid" style="margin-top:var(--space-4)">
+      <div class="kpi-card">
+        <div class="kpi-label">Crystal Crab</div>
+        <div class="kpi-value" style="color:var(--color-purple)">$62/kg</div>
+        <div class="kpi-sub">Highest avg · Australia → Japan</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Giant Spider Crab</div>
+        <div class="kpi-value" style="color:var(--color-gold)">$52/kg</div>
+        <div class="kpi-sub">Japan live market</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Red King Crab</div>
+        <div class="kpi-value" style="color:var(--color-error)">$32.5/kg</div>
+        <div class="kpi-sub">+18.5% YoY · Russia dominant</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Snow Crab</div>
+        <div class="kpi-value" style="color:var(--color-blue)">$18.4/kg</div>
+        <div class="kpi-sub">+8.3% YoY · Highest volume</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Mud Crab</div>
+        <div class="kpi-value" style="color:var(--color-success)">$16.8/kg</div>
+        <div class="kpi-sub">+9.4% YoY · SE Asia dominant</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Blue Swimming Crab</div>
+        <div class="kpi-value" style="color:var(--color-primary)">$8.6/kg</div>
+        <div class="kpi-sub">Highest volume Asian species</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="attribution">
+    Sources: IndexBox · Tridge · WorldBank WITS · NOAA · FAO · LinkedIn Crab Trade Reports · ITIS/WoRMS taxonomy · U.S. HTS Schedule B.
+    Data year: 2024–2025.
+    <span style="margin:0 4px">·</span>
+    <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+  </footer>
+</main>
+</div>
+
+<script>
+/* =====================================================
+   FULL MERGED DATASET — 16 species, no duplicates
+   HTS codes from original shell dashboard merged into
+   matching species from the trade data JSON.
+===================================================== */
+const SPECIES = [
+  // ── KING CRAB (5) ──────────────────────────────────
+  {
+    id:1, common:"Red King Crab", latin:"Paralithodes camtschaticus",
+    hts:"0306.14.40.03", category:"king", categoryLabel:"King Crab",
+    color:"#ef4444",
+    avgPricePerKg:32.5, priceRange:[22,45], globalVolumeKTons:58, totalValueBillion:1.89,
+    topExporter:"Russia", topImporter:"China", primaryForm:"live / frozen",
+    sustainability:"Watch", yoyPct:18.5,
+    region:"North Pacific", origins:["Russia","Norway","Alaska"],
+    form:"shell", formLabel:"In-Shell / Live",
+    description:"Most commercially significant king crab species. Wild-caught in the Bering Sea, Barents Sea, and Norwegian waters. Traded live, frozen whole, and as split legs/claws. Russia dominates exports to China and South Korea.",
+    taxonomy:"Family: Lithodidae", habitat:"Cold boreal/sub-Arctic, 5–200m",
+    avgWeight:"2–9 kg live", season:"Oct–Jan (US Bering Sea)"
+  },
+  {
+    id:2, common:"Blue King Crab", latin:"Paralithodes platypus",
+    hts:"0306.14.40.06", category:"king", categoryLabel:"King Crab",
+    color:"#5a9fd4",
+    avgPricePerKg:null, priceRange:null, globalVolumeKTons:null, totalValueBillion:null,
+    topExporter:"Russia / Alaska", topImporter:"Japan", primaryForm:"live / frozen",
+    sustainability:"Watch", yoyPct:null,
+    region:"North Pacific", origins:["Russia","Alaska (St. Matthew Is.)"],
+    form:"shell", formLabel:"In-Shell",
+    description:"Closely related to red king crab. Found around St. Matthew Island and Pribilof Islands, Alaska, and Russian waters. Smaller commercial volumes; often commands premium prices due to scarcity.",
+    taxonomy:"Family: Lithodidae", habitat:"Cold Bering Sea, 0–200m",
+    avgWeight:"1.5–7 kg live", season:"Limited; managed quota"
+  },
+  {
+    id:3, common:"Golden King Crab", latin:"Lithodes aequispinus",
+    hts:"0306.14.40.09", category:"king", categoryLabel:"King Crab",
+    color:"#f07842",
+    avgPricePerKg:null, priceRange:null, globalVolumeKTons:null, totalValueBillion:null,
+    topExporter:"Alaska / Canada", topImporter:"Japan / US", primaryForm:"frozen",
+    sustainability:"Sustainable", yoyPct:null,
+    region:"North Pacific", origins:["Alaska","Canada","Russia"],
+    form:"shell", formLabel:"In-Shell",
+    description:"Deepwater king crab found in the Aleutian Islands and Gulf of Alaska. Smaller and more slender than red king crab. Marketed as 'golden' or 'brown king crab.' Increasing Asian export volumes.",
+    taxonomy:"Family: Lithodidae", habitat:"Deep cold waters, 200–800m",
+    avgWeight:"0.7–3 kg live", season:"Year-round with seasonal peaks"
+  },
+  {
+    id:4, common:"Southern Red (Santolla) King Crab", latin:"Lithodes santolla",
+    hts:"0306.14.40.12", category:"king", categoryLabel:"King Crab",
+    color:"#e06060",
+    avgPricePerKg:null, priceRange:null, globalVolumeKTons:null, totalValueBillion:null,
+    topExporter:"Argentina / Chile", topImporter:"Spain / France", primaryForm:"frozen",
+    sustainability:"Sustainable", yoyPct:null,
+    region:"Southern Ocean", origins:["Argentina","Chile","Falkland Is."],
+    form:"shell", formLabel:"In-Shell",
+    description:"Southern Hemisphere king crab (Beagle Channel, Falkland Islands). Reclassified from L. antarcticus. Smaller than North Pacific kings but highly valued in European markets. Not to be confused with Paralomis granulosa (Southern Red Crab).",
+    taxonomy:"Family: Lithodidae", habitat:"Sub-Antarctic, 0–400m",
+    avgWeight:"0.5–2.5 kg live", season:"Apr–Nov (Southern Hemisphere)"
+  },
+  // ── SNOW CRAB (1) ──────────────────────────────────
+  {
+    id:5, common:"Snow Crab (Opilio)", latin:"Chionoecetes opilio / C. bairdi",
+    hts:"0306.14.40.20", category:"snow", categoryLabel:"Snow Crab",
+    color:"#60a5fa",
+    avgPricePerKg:18.4, priceRange:[12,28], globalVolumeKTons:112, totalValueBillion:2.06,
+    topExporter:"Canada", topImporter:"United States", primaryForm:"frozen",
+    sustainability:"Sustainable", yoyPct:8.3,
+    region:"North Pacific / North Atlantic", origins:["Canada","Russia","Alaska","Norway"],
+    form:"shell", formLabel:"In-Shell / Clusters",
+    description:"Highest-volume commercially traded crab globally. C. opilio dominates North Atlantic; C. bairdi in Bering Sea. Traded as whole frozen clusters or legs. Canada and Russia are primary exporters. Strong US, Japanese, and EU import demand.",
+    taxonomy:"Family: Oregoniidae", habitat:"Cold continental shelf, 10–600m",
+    avgWeight:"0.3–1.5 kg live", season:"Apr–Oct (varies by fishery)"
+  },
+  // ── DUNGENESS (1) ──────────────────────────────────
+  {
+    id:6, common:"Dungeness Crab", latin:"Metacarcinus magister",
+    hts:"0306.14.40.30", category:"dungeness", categoryLabel:"Dungeness",
+    color:"#f97316",
+    avgPricePerKg:14.2, priceRange:[9,22], globalVolumeKTons:31, totalValueBillion:0.44,
+    topExporter:"United States", topImporter:"China", primaryForm:"live / frozen",
+    sustainability:"Sustainable", yoyPct:24.1,
+    region:"US West Coast / Canada", origins:["California","Oregon","Washington","BC"],
+    form:"shell", formLabel:"Live / Cooked Whole",
+    description:"Iconic Pacific Coast USA species. Primarily traded live and whole cooked. Dominant US domestic market; major export flow to China and Japan. Managed under state/federal quota systems. Strong 24% YoY growth in 2025.",
+    taxonomy:"Family: Cancridae", habitat:"Pacific Coast, 0–180m",
+    avgWeight:"0.7–2.5 kg live", season:"Nov–Jun (California); varies by state"
+  },
+  // ── SWIMMING / PORTUNID (2) ────────────────────────
+  {
+    id:7, common:"Blue Swimming Crab", latin:"Portunus pelagicus",
+    hts:null, category:"swimming", categoryLabel:"Swimming Crab",
+    color:"#3b82f6",
+    avgPricePerKg:8.6, priceRange:[5,14], globalVolumeKTons:89, totalValueBillion:0.77,
+    topExporter:"Indonesia", topImporter:"United States", primaryForm:"preserved / cooked",
+    sustainability:"Watch", yoyPct:4.2,
+    region:"Indo-Pacific", origins:["Indonesia","China","Vietnam","Philippines","India"],
+    form:"meat", formLabel:"Preserved / Cooked",
+    description:"High-volume Indo-Pacific species. Primarily exported as pasteurized or preserved crabmeat. Indonesia and China are dominant suppliers to the US market. Subject to US anti-dumping investigations (2024). Different species from Callinectes sapidus (Atlantic blue crab).",
+    taxonomy:"Family: Portunidae", habitat:"Tropical/subtropical coasts, 0–50m",
+    avgWeight:"0.1–0.6 kg live", season:"Year-round"
+  },
+  {
+    id:8, common:"Blue Crab (Atlantic)", latin:"Callinectes sapidus",
+    hts:"1605.10.20.10", category:"swimming", categoryLabel:"Swimming Crab",
+    color:"#06b6d4",
+    avgPricePerKg:12.1, priceRange:[7,18], globalVolumeKTons:24, totalValueBillion:0.29,
+    topExporter:"Indonesia", topImporter:"United States", primaryForm:"preserved",
+    sustainability:"Watch", yoyPct:-2.8,
+    region:"SE Asia / Atlantic", origins:["Indonesia","China","Mexico","Vietnam","Thailand"],
+    form:"meat", formLabel:"Canned / Pasteurized",
+    description:"Atlantic blue crab processed predominantly in SE Asia and exported as preserved/pasteurized crabmeat under HTS 1605.10.20.10. US is the dominant import market. Slight volume decline (-2.8%) in 2024–2025 amid anti-dumping actions. HTS Chapter 16.05 product.",
+    taxonomy:"Family: Portunidae", habitat:"Atlantic/Gulf coasts; processed in SE Asia",
+    avgWeight:"0.1–0.3 kg live", season:"Year-round supply"
+  },
+  // ── SPECIALTY (8) ─────────────────────────────────
+  {
+    id:9, common:"Stone Crab", latin:"Menippe mercenaria",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#8b5cf6",
+    avgPricePerKg:38, priceRange:[28,55], globalVolumeKTons:4.2, totalValueBillion:0.16,
+    topExporter:"United States", topImporter:"France", primaryForm:"fresh / cooked",
+    sustainability:"Sustainable", yoyPct:3.1,
+    region:"US Gulf / Atlantic", origins:["United States"],
+    form:"shell", formLabel:"Fresh / Cooked Claws",
+    description:"Unique fishery — only claws are harvested; the crab is returned alive to regenerate. Primarily US Gulf Coast product. Premium European export market (France, Spain). High value per kg due to claw-only harvest.",
+    taxonomy:"Family: Menippidae", habitat:"Gulf of Mexico / Atlantic, 0–180m",
+    avgWeight:"Claws only, 50–200g", season:"Oct–May (Florida)"
+  },
+  {
+    id:10, common:"Southern Red Crab", latin:"Paralomis granulosa",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#ec4899",
+    avgPricePerKg:10.4, priceRange:[7,15], globalVolumeKTons:18, totalValueBillion:0.19,
+    topExporter:"Argentina", topImporter:"United States", primaryForm:"frozen",
+    sustainability:"Sustainable", yoyPct:42.3,
+    region:"Southern Ocean", origins:["Argentina"],
+    form:"shell", formLabel:"Frozen",
+    description:"Distinct from Lithodes santolla (Santolla king crab). Paralomis granulosa is a separate species fished off Argentina. Explosive +42.3% YoY growth. Primarily exported frozen to US, Spain, and Japan. Growing presence in premium seafood markets.",
+    taxonomy:"Family: Lithodidae", habitat:"South Atlantic / sub-Antarctic",
+    avgWeight:"0.3–1.2 kg live", season:"Apr–Oct"
+  },
+  {
+    id:11, common:"Giant Spider Crab", latin:"Macrocheira kaempferi",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#f59e0b",
+    avgPricePerKg:52, priceRange:[38,75], globalVolumeKTons:0.8, totalValueBillion:0.04,
+    topExporter:"Japan", topImporter:"China", primaryForm:"live",
+    sustainability:"Concern", yoyPct:5.6,
+    region:"Japan / Western Pacific", origins:["Japan"],
+    form:"shell", formLabel:"Live",
+    description:"World's largest arthropod by leg span. Luxury live product. Japan is the sole meaningful exporter; China and Hong Kong are primary importers. Very low volume but extremely high unit value. Conservation concern due to slow reproduction.",
+    taxonomy:"Family: Inachidae", habitat:"Pacific Ocean off Japan, 150–300m",
+    avgWeight:"Up to 19 kg live", season:"Spring peak (Mar–May)"
+  },
+  {
+    id:12, common:"Crystal Crab", latin:"Chaceon albus",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#a78bfa",
+    avgPricePerKg:62, priceRange:[48,90], globalVolumeKTons:0.6, totalValueBillion:0.04,
+    topExporter:"Australia", topImporter:"Japan", primaryForm:"live / fresh",
+    sustainability:"Sustainable", yoyPct:7.2,
+    region:"Australia / Indian Ocean", origins:["Australia"],
+    form:"shell", formLabel:"Live / Fresh",
+    description:"Ultra-premium deep-sea crab from Western Australia. World's most expensive commercially traded crab by $/kg. Exported live to Japan and China where it commands luxury prices. Sustainable fishery under Australian quota management.",
+    taxonomy:"Family: Geryonidae", habitat:"Deep waters off WA, 300–500m",
+    avgWeight:"0.5–2 kg live", season:"Year-round; limited quota"
+  },
+  {
+    id:13, common:"Mud Crab", latin:"Scylla serrata",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#84cc16",
+    avgPricePerKg:16.8, priceRange:[11,26], globalVolumeKTons:22, totalValueBillion:0.37,
+    topExporter:"Vietnam", topImporter:"China", primaryForm:"live",
+    sustainability:"Watch", yoyPct:9.4,
+    region:"SE Asia / Indo-Pacific", origins:["Vietnam","Indonesia","Myanmar"],
+    form:"shell", formLabel:"Live",
+    description:"Major live crab traded across SE Asia. Vietnam, Indonesia, and Myanmar are primary exporters to China. High demand at Chinese New Year. Aquaculture increasingly supplements wild catch. +9.4% YoY growth.",
+    taxonomy:"Family: Portunidae", habitat:"Mangroves/estuaries, 0–20m",
+    avgWeight:"0.3–1.5 kg live", season:"Year-round; peaks vary"
+  },
+  {
+    id:14, common:"Horsehair Crab", latin:"Erimacrus isenbeckii",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#fbbf24",
+    avgPricePerKg:24, priceRange:[18,32], globalVolumeKTons:3.8, totalValueBillion:0.09,
+    topExporter:"Russia", topImporter:"Japan", primaryForm:"live / cooked",
+    sustainability:"Sustainable", yoyPct:-4.1,
+    region:"North Pacific / Sea of Japan", origins:["Russia"],
+    form:"shell", formLabel:"Live / Cooked",
+    description:"Prized in Japanese market (called 'Ke-gani'). Russia is the sole significant exporter; Japan is essentially the exclusive importer. 100% of trade flow is Russia → Japan. Slight volume decline (-4.1%) in 2024–2025.",
+    taxonomy:"Family: Atelecyclidae", habitat:"North Pacific / Sea of Japan, 20–200m",
+    avgWeight:"0.15–0.4 kg live", season:"Feb–May (Japan peak)"
+  },
+  {
+    id:15, common:"Coconut Crab", latin:"Birgus latro",
+    hts:null, category:"specialty", categoryLabel:"Specialty",
+    color:"#d97706",
+    avgPricePerKg:45, priceRange:[30,65], globalVolumeKTons:0.3, totalValueBillion:0.01,
+    topExporter:"Philippines", topImporter:"Japan", primaryForm:"live",
+    sustainability:"Concern", yoyPct:-8.5,
+    region:"Pacific Islands / Indo-Pacific", origins:["Philippines","Pacific Islands"],
+    form:"shell", formLabel:"Live",
+    description:"World's largest terrestrial arthropod. CITES-monitored; protected in many jurisdictions. Very small commercial trade volumes. Declining -8.5% YoY due to conservation pressure. Philippines to Japan is the primary trade route.",
+    taxonomy:"Family: Coenobitidae", habitat:"Tropical islands, terrestrial/coastal",
+    avgWeight:"1–4 kg", season:"Limited; heavily regulated"
+  },
+  // ── MEAT PRODUCTS 16.05 (already captured in Blue Crab id:8) ──
+  // Note: The original HTS 1605.10.20.10 entry covering SE Asia processed
+  // meat is incorporated into Blue Crab (Atlantic) id:8 above.
+  // Blue Swimming Crab (Portunus pelagicus) is a distinct species — id:7.
+];
+
+/* =====================================================
+   TRADE DATA from morning JSON
+===================================================== */
+const TRADE_RECORDS = [
+  {id:"r1",species:"Red King Crab",origin:"Russia",destination:"China",flow:"export",volumeKg:40235000,valueMillion:1130.2,pricePerKg:28.1,form:"live",year:2025,yoyChangePct:15,marketSharePct:43.8},
+  {id:"r2",species:"Red King Crab",origin:"Russia",destination:"South Korea",flow:"export",volumeKg:11631000,valueMillion:324.5,pricePerKg:27.9,form:"live",year:2025,yoyChangePct:0.2,marketSharePct:12.7},
+  {id:"r3",species:"Red King Crab",origin:"Norway",destination:"United States",flow:"export",volumeKg:657000,valueMillion:29.6,pricePerKg:45.1,form:"frozen",year:2025,yoyChangePct:230,marketSharePct:0.7},
+  {id:"r4",species:"Red King Crab",origin:"Russia",destination:"Japan",flow:"export",volumeKg:5200000,valueMillion:197.6,pricePerKg:38,form:"live",year:2025,yoyChangePct:-8,marketSharePct:5.7},
+  {id:"r5",species:"Red King Crab",origin:"Norway",destination:"France",flow:"export",volumeKg:820000,valueMillion:34,pricePerKg:41.5,form:"frozen",year:2025,yoyChangePct:12,marketSharePct:0.9},
+  {id:"r6",species:"Red King Crab",origin:"United States",destination:"Japan",flow:"export",volumeKg:980000,valueMillion:44.2,pricePerKg:45.1,form:"frozen",year:2025,yoyChangePct:367,marketSharePct:1.1},
+  {id:"s1",species:"Snow Crab (Opilio)",origin:"Canada",destination:"United States",flow:"export",volumeKg:47610000,valueMillion:802,pricePerKg:16.8,form:"frozen",year:2025,yoyChangePct:8.3,marketSharePct:42.5},
+  {id:"s2",species:"Snow Crab (Opilio)",origin:"Canada",destination:"Japan",flow:"export",volumeKg:7144000,valueMillion:121.2,pricePerKg:17,form:"frozen",year:2025,yoyChangePct:20,marketSharePct:6.4},
+  {id:"s3",species:"Snow Crab (Opilio)",origin:"Russia",destination:"Japan",flow:"export",volumeKg:5800000,valueMillion:98.6,pricePerKg:17,form:"frozen",year:2025,yoyChangePct:-5,marketSharePct:5.2},
+  {id:"s4",species:"Snow Crab (Opilio)",origin:"Norway",destination:"United States",flow:"export",volumeKg:5307000,valueMillion:89.7,pricePerKg:16.9,form:"frozen",year:2025,yoyChangePct:47.5,marketSharePct:4.7},
+  {id:"s5",species:"Snow Crab (Opilio)",origin:"Canada",destination:"South Korea",flow:"export",volumeKg:7505000,valueMillion:151.4,pricePerKg:20.2,form:"live",year:2025,yoyChangePct:3,marketSharePct:6.7},
+  {id:"s6",species:"Snow Crab (Opilio)",origin:"Norway",destination:"Denmark",flow:"export",volumeKg:3200000,valueMillion:57.6,pricePerKg:18,form:"frozen",year:2025,yoyChangePct:5,marketSharePct:2.9},
+  {id:"s7",species:"Snow Crab (Opilio)",origin:"Japan",destination:"United States",flow:"export",volumeKg:466000,valueMillion:7.9,pricePerKg:17,form:"frozen",year:2025,yoyChangePct:130,marketSharePct:0.4},
+  {id:"d1",species:"Dungeness Crab",origin:"United States",destination:"China",flow:"export",volumeKg:7745000,valueMillion:110,pricePerKg:14.2,form:"live",year:2025,yoyChangePct:24.1,marketSharePct:25},
+  {id:"d2",species:"Dungeness Crab",origin:"Canada",destination:"China",flow:"export",volumeKg:5800000,valueMillion:82.4,pricePerKg:14.2,form:"live",year:2025,yoyChangePct:18,marketSharePct:18.7},
+  {id:"d3",species:"Dungeness Crab",origin:"United States",destination:"Japan",flow:"export",volumeKg:3200000,valueMillion:45.4,pricePerKg:14.2,form:"frozen",year:2025,yoyChangePct:8,marketSharePct:10.3},
+  {id:"d4",species:"Dungeness Crab",origin:"Canada",destination:"United States",flow:"export",volumeKg:2100000,valueMillion:29.8,pricePerKg:14.2,form:"fresh",year:2025,yoyChangePct:5,marketSharePct:6.8},
+  {id:"b1",species:"Blue Swimming Crab",origin:"Indonesia",destination:"United States",flow:"export",volumeKg:33283000,valueMillion:480,pricePerKg:14.4,form:"preserved",year:2024,yoyChangePct:4.2,marketSharePct:37.4},
+  {id:"b2",species:"Blue Swimming Crab",origin:"China",destination:"United States",flow:"export",volumeKg:22289000,valueMillion:408.8,pricePerKg:18.3,form:"preserved",year:2024,yoyChangePct:-2.1,marketSharePct:25},
+  {id:"b3",species:"Blue Swimming Crab",origin:"Indonesia",destination:"Japan",flow:"export",volumeKg:8200000,valueMillion:70.5,pricePerKg:8.6,form:"preserved",year:2024,yoyChangePct:6,marketSharePct:9.2},
+  {id:"b4",species:"Blue Swimming Crab",origin:"Vietnam",destination:"China",flow:"export",volumeKg:6400000,valueMillion:55,pricePerKg:8.6,form:"preserved",year:2024,yoyChangePct:18,marketSharePct:7.2},
+  {id:"b5",species:"Blue Swimming Crab",origin:"Philippines",destination:"United States",flow:"export",volumeKg:4100000,valueMillion:35.3,pricePerKg:8.6,form:"preserved",year:2024,yoyChangePct:3.1,marketSharePct:4.6},
+  {id:"b6",species:"Blue Swimming Crab",origin:"India",destination:"United States",flow:"export",volumeKg:3800000,valueMillion:32.7,pricePerKg:8.6,form:"preserved",year:2024,yoyChangePct:5.5,marketSharePct:4.3},
+  {id:"st1",species:"Stone Crab",origin:"United States",destination:"France",flow:"export",volumeKg:1800000,valueMillion:68.4,pricePerKg:38,form:"fresh",year:2024,yoyChangePct:3.1,marketSharePct:42.9},
+  {id:"st2",species:"Stone Crab",origin:"United States",destination:"Spain",flow:"export",volumeKg:950000,valueMillion:36.1,pricePerKg:38,form:"fresh",year:2024,yoyChangePct:2,marketSharePct:22.6},
+  {id:"st3",species:"Stone Crab",origin:"United States",destination:"Japan",flow:"export",volumeKg:620000,valueMillion:23.6,pricePerKg:38,form:"cooked",year:2024,yoyChangePct:4.5,marketSharePct:14.8},
+  {id:"bc1",species:"Blue Crab (Atlantic)",origin:"Indonesia",destination:"United States",flow:"export",volumeKg:8900000,valueMillion:107.7,pricePerKg:12.1,form:"preserved",year:2024,yoyChangePct:-2.8,marketSharePct:37.1},
+  {id:"bc2",species:"Blue Crab (Atlantic)",origin:"China",destination:"United States",flow:"export",volumeKg:6200000,valueMillion:75,pricePerKg:12.1,form:"preserved",year:2024,yoyChangePct:-5,marketSharePct:25.8},
+  {id:"bc3",species:"Blue Crab (Atlantic)",origin:"Mexico",destination:"United States",flow:"export",volumeKg:3100000,valueMillion:37.5,pricePerKg:12.1,form:"fresh",year:2024,yoyChangePct:1.2,marketSharePct:12.9},
+  {id:"sr1",species:"Southern Red Crab",origin:"Argentina",destination:"United States",flow:"export",volumeKg:3072000,valueMillion:31.9,pricePerKg:10.4,form:"frozen",year:2025,yoyChangePct:42.3,marketSharePct:17.1},
+  {id:"sr2",species:"Southern Red Crab",origin:"Argentina",destination:"Spain",flow:"export",volumeKg:2800000,valueMillion:29.1,pricePerKg:10.4,form:"frozen",year:2025,yoyChangePct:38,marketSharePct:15.6},
+  {id:"sr3",species:"Southern Red Crab",origin:"Argentina",destination:"Japan",flow:"export",volumeKg:2200000,valueMillion:22.9,pricePerKg:10.4,form:"frozen",year:2025,yoyChangePct:30,marketSharePct:12.2},
+  {id:"m1",species:"Mud Crab",origin:"Vietnam",destination:"China",flow:"export",volumeKg:9800000,valueMillion:164.6,pricePerKg:16.8,form:"live",year:2024,yoyChangePct:9.4,marketSharePct:44.5},
+  {id:"m2",species:"Mud Crab",origin:"Indonesia",destination:"China",flow:"export",volumeKg:5400000,valueMillion:90.7,pricePerKg:16.8,form:"live",year:2024,yoyChangePct:6.2,marketSharePct:24.5},
+  {id:"m3",species:"Mud Crab",origin:"Myanmar",destination:"China",flow:"export",volumeKg:3200000,valueMillion:53.8,pricePerKg:16.8,form:"live",year:2024,yoyChangePct:3,marketSharePct:14.5},
+  {id:"h1",species:"Horsehair Crab",origin:"Russia",destination:"Japan",flow:"export",volumeKg:3800000,valueMillion:91.2,pricePerKg:24,form:"cooked",year:2024,yoyChangePct:-4.1,marketSharePct:100},
+  {id:"g1",species:"Giant Spider Crab",origin:"Japan",destination:"China",flow:"export",volumeKg:480000,valueMillion:25,pricePerKg:52.1,form:"live",year:2024,yoyChangePct:5.6,marketSharePct:60},
+  {id:"g2",species:"Giant Spider Crab",origin:"Japan",destination:"Hong Kong",flow:"export",volumeKg:220000,valueMillion:11.4,pricePerKg:51.8,form:"live",year:2024,yoyChangePct:4.2,marketSharePct:27.5},
+  {id:"cr1",species:"Crystal Crab",origin:"Australia",destination:"Japan",flow:"export",volumeKg:380000,valueMillion:23.6,pricePerKg:62.1,form:"live",year:2024,yoyChangePct:7.2,marketSharePct:63.3},
+  {id:"cr2",species:"Crystal Crab",origin:"Australia",destination:"China",flow:"export",volumeKg:180000,valueMillion:11.2,pricePerKg:62.2,form:"live",year:2024,yoyChangePct:9,marketSharePct:30}
+];
+
+const EXPORTERS = [
+  {country:"Russia",flag:"🇷🇺",totalVolumeTons:81000,totalValueBillion:2.23,pricePerKgAvg:27.5,yoyPct:11,topSpecies:"Red King Crab",shareOfGlobal:21.2},
+  {country:"Canada",flag:"🇨🇦",totalVolumeTons:77000,totalValueBillion:1.21,pricePerKgAvg:15.7,yoyPct:8.3,topSpecies:"Snow Crab (Opilio)",shareOfGlobal:20.1},
+  {country:"China",flag:"🇨🇳",totalVolumeTons:30000,totalValueBillion:0.27,pricePerKgAvg:9,yoyPct:-2.1,topSpecies:"Blue Swimming Crab",shareOfGlobal:7.8},
+  {country:"Indonesia",flag:"🇮🇩",totalVolumeTons:18000,totalValueBillion:0.48,pricePerKgAvg:26.7,yoyPct:4.2,topSpecies:"Blue Swimming Crab",shareOfGlobal:4.7},
+  {country:"United States",flag:"🇺🇸",totalVolumeTons:15000,totalValueBillion:0.68,pricePerKgAvg:45.3,yoyPct:14.8,topSpecies:"Dungeness Crab",shareOfGlobal:3.9},
+  {country:"South Korea",flag:"🇰🇷",totalVolumeTons:13000,totalValueBillion:0.42,pricePerKgAvg:32.3,yoyPct:21.9,topSpecies:"Red King Crab",shareOfGlobal:3.4},
+  {country:"Pakistan",flag:"🇵🇰",totalVolumeTons:12000,totalValueBillion:0.09,pricePerKgAvg:7.5,yoyPct:6.1,topSpecies:"Blue Swimming Crab",shareOfGlobal:3.1},
+  {country:"Myanmar",flag:"🇲🇲",totalVolumeTons:12000,totalValueBillion:0.11,pricePerKgAvg:9.2,yoyPct:3.5,topSpecies:"Blue Swimming Crab",shareOfGlobal:3.1},
+  {country:"Norway",flag:"🇳🇴",totalVolumeTons:9000,totalValueBillion:0.38,pricePerKgAvg:42.2,yoyPct:47.5,topSpecies:"Snow Crab (Opilio)",shareOfGlobal:2.3},
+  {country:"United Kingdom",flag:"🇬🇧",totalVolumeTons:10000,totalValueBillion:0.14,pricePerKgAvg:14,yoyPct:-1.2,topSpecies:"Blue Crab",shareOfGlobal:2.6},
+  {country:"Vietnam",flag:"🇻🇳",totalVolumeTons:8500,totalValueBillion:0.12,pricePerKgAvg:14.1,yoyPct:18,topSpecies:"Mud Crab",shareOfGlobal:2.2},
+  {country:"Argentina",flag:"🇦🇷",totalVolumeTons:7200,totalValueBillion:0.07,pricePerKgAvg:9.7,yoyPct:42.3,topSpecies:"Southern Red Crab",shareOfGlobal:1.9},
+  {country:"Australia",flag:"🇦🇺",totalVolumeTons:1800,totalValueBillion:0.11,pricePerKgAvg:61.1,yoyPct:7.2,topSpecies:"Crystal Crab",shareOfGlobal:0.5},
+  {country:"Japan",flag:"🇯🇵",totalVolumeTons:1200,totalValueBillion:0.08,pricePerKgAvg:66.7,yoyPct:130,topSpecies:"Giant Spider Crab",shareOfGlobal:0.3}
+];
+
+const IMPORTERS = [
+  {country:"China",flag:"🇨🇳",totalVolumeTons:133000,totalValueBillion:2.1,pricePerKgAvg:15.8,yoyPct:15,topSpecies:"Red King Crab",shareOfGlobal:34.4},
+  {country:"United States",flag:"🇺🇸",totalVolumeTons:73000,totalValueBillion:1.1,pricePerKgAvg:15.1,yoyPct:10,topSpecies:"Snow Crab (Opilio)",shareOfGlobal:18.9},
+  {country:"South Korea",flag:"🇰🇷",totalVolumeTons:46000,totalValueBillion:0.52,pricePerKgAvg:11.3,yoyPct:3,topSpecies:"Snow Crab (Opilio)",shareOfGlobal:11.9},
+  {country:"Japan",flag:"🇯🇵",totalVolumeTons:29000,totalValueBillion:0.49,pricePerKgAvg:16.9,yoyPct:-5,topSpecies:"Horsehair Crab",shareOfGlobal:7.5},
+  {country:"Thailand",flag:"🇹🇭",totalVolumeTons:19000,totalValueBillion:0.12,pricePerKgAvg:6.3,yoyPct:8.5,topSpecies:"Blue Swimming Crab",shareOfGlobal:4.9},
+  {country:"France",flag:"🇫🇷",totalVolumeTons:9800,totalValueBillion:0.18,pricePerKgAvg:18.4,yoyPct:2.1,topSpecies:"Stone Crab",shareOfGlobal:2.5},
+  {country:"Spain",flag:"🇪🇸",totalVolumeTons:8200,totalValueBillion:0.11,pricePerKgAvg:13.4,yoyPct:-0.8,topSpecies:"Blue Swimming Crab",shareOfGlobal:2.1},
+  {country:"Denmark",flag:"🇩🇰",totalVolumeTons:7400,totalValueBillion:0.13,pricePerKgAvg:17.6,yoyPct:8.1,topSpecies:"Snow Crab (Opilio)",shareOfGlobal:1.9},
+  {country:"Canada",flag:"🇨🇦",totalVolumeTons:6900,totalValueBillion:0.1,pricePerKgAvg:14.5,yoyPct:5.6,topSpecies:"Dungeness Crab",shareOfGlobal:1.8},
+  {country:"Vietnam",flag:"🇻🇳",totalVolumeTons:5800,totalValueBillion:0.09,pricePerKgAvg:15.5,yoyPct:18,topSpecies:"Blue Swimming Crab",shareOfGlobal:1.5},
+  {country:"Hong Kong",flag:"🇭🇰",totalVolumeTons:4900,totalValueBillion:0.12,pricePerKgAvg:24.5,yoyPct:6,topSpecies:"Red King Crab",shareOfGlobal:1.3},
+  {country:"Indonesia",flag:"🇮🇩",totalVolumeTons:4200,totalValueBillion:0.04,pricePerKgAvg:9.5,yoyPct:12,topSpecies:"Blue Swimming Crab",shareOfGlobal:1.1}
+];
+
+const MARKET_TREND = [
+  {year:"2018",valueBillion:24.1,volumeMKg:286},{year:"2019",valueBillion:26.4,volumeMKg:302},
+  {year:"2020",valueBillion:22.8,volumeMKg:285},{year:"2021",valueBillion:25.2,volumeMKg:298},
+  {year:"2022",valueBillion:27.9,volumeMKg:318},{year:"2023",valueBillion:29.8,volumeMKg:334},
+  {year:"2024",valueBillion:32.1,volumeMKg:357},{year:"2025",valueBillion:34.8,volumeMKg:386}
+];
+
+const PRICE_TREND = [
+  {month:"Mar '24",redKing:30.2,snow:17.1,dungeness:12.8,blueSw:8.2,mudCrab:15.9},
+  {month:"Apr '24",redKing:29.8,snow:17.4,dungeness:13.1,blueSw:8.4,mudCrab:16.1},
+  {month:"May '24",redKing:30.5,snow:18.2,dungeness:14.2,blueSw:8.5,mudCrab:16.5},
+  {month:"Jun '24",redKing:31,snow:19.1,dungeness:15,blueSw:8.7,mudCrab:17},
+  {month:"Jul '24",redKing:29.5,snow:18.8,dungeness:14.8,blueSw:8.6,mudCrab:17.2},
+  {month:"Aug '24",redKing:28.8,snow:18.5,dungeness:14.5,blueSw:8.4,mudCrab:16.8},
+  {month:"Sep '24",redKing:27.9,snow:18,dungeness:14,blueSw:8.3,mudCrab:16.4},
+  {month:"Oct '24",redKing:27.2,snow:17.8,dungeness:13.8,blueSw:8.4,mudCrab:16.6},
+  {month:"Nov '24",redKing:26.8,snow:17.5,dungeness:13.5,blueSw:8.5,mudCrab:16.9},
+  {month:"Dec '24",redKing:27.5,snow:17.9,dungeness:14,blueSw:8.6,mudCrab:17.2},
+  {month:"Jan '25",redKing:28,snow:18.1,dungeness:14.2,blueSw:8.5,mudCrab:16.8},
+  {month:"Feb '25",redKing:28.1,snow:18.3,dungeness:14.2,blueSw:8.6,mudCrab:16.8},
+  {month:"Mar '25",redKing:28.1,snow:18.4,dungeness:14.2,blueSw:8.6,mudCrab:16.8}
+];
+
+/* =====================================================
+   STATE
+===================================================== */
+let state = {
+  activeView: "overview",
+  spFilter: "all",
+  tfFilter: "all",
+  search: "",
+  selectedId: null,
+  spSort: null, spSortDir: "asc",
+  trSort: null, trSortDir: "asc",
+  expSort: null, expSortDir: "asc",
+  impSort: null, impSortDir: "asc"
+};
+
+/* =====================================================
+   HELPERS
+===================================================== */
+const esc = s => String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fmt = (n,d=0) => n==null?"—":n.toLocaleString("en-US",{maximumFractionDigits:d,minimumFractionDigits:d});
+const fmtM = n => n==null?"—":"$"+fmt(n,1)+"M";
+const fmtB = n => n==null?"—":"$"+n.toFixed(2)+"B";
+const fmtKg = n => n==null?"—":fmt(n/1000,0)+"k kg";
+const delta = v => v==null?"—":`<span class="${v>=0?"delta-pos":"delta-neg"}">${v>=0?"+":""}${v}%</span>`;
+
+function getCatTag(cat, label) {
+  const m={king:"tag-king",snow:"tag-snow",dungeness:"tag-dungeness",swimming:"tag-swimming",specialty:"tag-specialty",meat:"tag-meat"};
+  return `<span class="tag ${m[cat]||""}">${esc(label)}</span>`;
+}
+function getSusSpan(s) {
+  const m={Sustainable:"sus-sustainable",Watch:"sus-watch",Concern:"sus-concern"};
+  return `<span class="${m[s]||""}">${esc(s||"—")}</span>`;
+}
+function getFormBadge(form) {
+  if(!form) return "";
+  if(form==="shell"||form==="live") return `<span class="badge badge-live">Live/Shell</span>`;
+  if(form==="frozen") return `<span class="badge badge-frozen">Frozen</span>`;
+  if(form==="meat"||form==="preserved") return `<span class="badge badge-meat">Meat</span>`;
+  if(form==="fresh"||form==="cooked") return `<span class="badge badge-fresh">Fresh/Cooked</span>`;
+  return `<span class="badge badge-fresh">${esc(form)}</span>`;
+}
+function getChartColors() {
+  const s = getComputedStyle(document.documentElement);
+  return {
+    primary: s.getPropertyValue("--color-primary").trim(),
+    gold:    s.getPropertyValue("--color-gold").trim(),
+    blue:    s.getPropertyValue("--color-blue").trim(),
+    orange:  s.getPropertyValue("--color-orange").trim(),
+    teal:    s.getPropertyValue("--color-teal").trim(),
+    purple:  s.getPropertyValue("--color-purple").trim(),
+    pink:    s.getPropertyValue("--color-pink").trim(),
+    success: s.getPropertyValue("--color-success").trim(),
+    error:   s.getPropertyValue("--color-error").trim(),
+    text:    s.getPropertyValue("--color-text").trim(),
+    muted:   s.getPropertyValue("--color-text-faint").trim(),
+    grid:    s.getPropertyValue("--color-divider").trim(),
+    bg:      s.getPropertyValue("--color-surface").trim(),
+    warning: s.getPropertyValue("--color-warning").trim(),
+  };
+}
+
+/* =====================================================
+   FILTERED DATA
+===================================================== */
+function filteredSpecies() {
+  let d = [...SPECIES];
+  if(state.spFilter !== "all") d = d.filter(x => x.category === state.spFilter);
+  if(state.search) {
+    const q = state.search.toLowerCase();
+    d = d.filter(x =>
+      x.common.toLowerCase().includes(q) ||
+      x.latin.toLowerCase().includes(q) ||
+      (x.hts||"").includes(q) ||
+      x.categoryLabel.toLowerCase().includes(q) ||
+      x.origins.some(o=>o.toLowerCase().includes(q)) ||
+      (x.topExporter||"").toLowerCase().includes(q)
+    );
+  }
+  if(state.spSort) {
+    d.sort((a,b)=>{
+      let av=a[state.spSort],bv=b[state.spSort];
+      if(av==null) return 1; if(bv==null) return -1;
+      if(typeof av==="string") av=av.toLowerCase();
+      if(typeof bv==="string") bv=bv.toLowerCase();
+      return (av<bv?-1:av>bv?1:0)*(state.spSortDir==="asc"?1:-1);
+    });
+  }
+  return d;
+}
+
+function filteredTrade() {
+  let d = [...TRADE_RECORDS];
+  if(state.tfFilter !== "all") d = d.filter(x => x.species === state.tfFilter);
+  if(state.search) {
+    const q = state.search.toLowerCase();
+    d = d.filter(x =>
+      x.species.toLowerCase().includes(q) ||
+      x.origin.toLowerCase().includes(q) ||
+      x.destination.toLowerCase().includes(q)
+    );
+  }
+  if(state.trSort) {
+    d.sort((a,b)=>{
+      let av=a[state.trSort],bv=b[state.trSort];
+      if(typeof av==="string") av=av.toLowerCase();
+      if(typeof bv==="string") bv=bv.toLowerCase();
+      return (av<bv?-1:av>bv?1:0)*(state.trSortDir==="asc"?1:-1);
+    });
+  }
+  return d;
+}
+
+/* =====================================================
+   RENDER: SPECIES TABLE
+===================================================== */
+function renderSpeciesTable() {
+  const data = filteredSpecies();
+  const tbody = document.getElementById("speciesBody");
+  document.getElementById("spRowCount").textContent = `${data.length} species`;
+
+  if(!data.length) {
+    tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="empty-title">No results</div><div class="empty-sub">Adjust filters or search</div></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(d => `
+    <tr class="${d.id===state.selectedId?"selected":""}" data-id="${d.id}">
+      <td><div class="species-badge"><span class="species-dot" style="background:${d.color}"></span>${esc(d.common)}</div></td>
+      <td><span class="species-latin">${esc(d.latin)}</span></td>
+      <td>${d.hts?`<span class="hts-code">${esc(d.hts)}</span>`:`<span class="hts-na">—</span>`}</td>
+      <td>${getCatTag(d.category,d.categoryLabel)}</td>
+      <td class="num">${d.avgPricePerKg?"$"+d.avgPricePerKg:"—"}</td>
+      <td class="num">${d.globalVolumeKTons?fmt(d.globalVolumeKTons,0):"—"}</td>
+      <td>${getSusSpan(d.sustainability)}</td>
+      <td class="num">${delta(d.yoyPct)}</td>
+    </tr>`).join("");
+
+  tbody.querySelectorAll("tr[data-id]").forEach(row => {
+    row.addEventListener("click",()=>{
+      const id = parseInt(row.dataset.id);
+      state.selectedId = state.selectedId===id?null:id;
+      renderSpeciesTable(); renderDetail();
+    });
+  });
+}
+
+/* =====================================================
+   RENDER: DETAIL PANEL
+===================================================== */
+function renderDetail() {
+  const el = document.getElementById("detailContent");
+  if(!state.selectedId){
+    el.innerHTML=`<div class="select-prompt"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg><p>Select a species to view full detail, pricing, and trade data</p></div>`;
+    return;
+  }
+  const d = SPECIES.find(x=>x.id===state.selectedId);
+  if(!d) return;
+  const tradeRows = TRADE_RECORDS.filter(t=>
+    t.species===d.common ||
+    t.species.toLowerCase().includes(d.common.toLowerCase().split(" ")[0])
+  ).slice(0,4);
+  const tradeHtml = tradeRows.length ? tradeRows.map(t=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider);font-size:var(--text-xs)">
+      <div>${esc(t.origin)} → ${esc(t.destination)}</div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-weight:600">$${t.pricePerKg}/kg</div>
+        <div style="color:var(--color-text-faint)">${delta(t.yoyChangePct)}</div>
+      </div>
+    </div>`).join("") : `<div style="font-size:var(--text-xs);color:var(--color-text-faint)">No trade records</div>`;
+
+  el.innerHTML=`<div class="fade-in">
+    <div class="detail-header">
+      <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)">
+        <span class="species-dot" style="background:${d.color};width:10px;height:10px"></span>
+        <div class="detail-species-name">${esc(d.common)}</div>
+      </div>
+      <div class="detail-latin">${esc(d.latin)}</div>
+      ${d.hts?`<div class="detail-hts">${esc(d.hts)}</div>`:""}
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-2)">
+        ${getCatTag(d.category,d.categoryLabel)}
+        ${getSusSpan(d.sustainability)}
+      </div>
+      <div class="highlight-bar" style="background:linear-gradient(90deg,${d.color},transparent)"></div>
+    </div>
+    ${d.avgPricePerKg?`
+    <div class="detail-section">
+      <div class="stat-row">
+        <div class="stat-item"><div class="stat-val">$${d.avgPricePerKg}/kg</div><div class="stat-lab">Avg Price</div></div>
+        <div class="stat-item"><div class="stat-val">${d.globalVolumeKTons?fmt(d.globalVolumeKTons,0)+"kt":"—"}</div><div class="stat-lab">Global Volume</div></div>
+      </div>
+      <div class="stat-row" style="margin-top:var(--space-2)">
+        <div class="stat-item"><div class="stat-val">${fmtB(d.totalValueBillion)}</div><div class="stat-lab">Total Value</div></div>
+        <div class="stat-item"><div class="stat-val">${d.yoyPct!=null?(d.yoyPct>=0?"+":"")+d.yoyPct+"%":"—"}</div><div class="stat-lab">YoY Growth</div></div>
+      </div>
+    </div>`:""}
+    <div class="detail-section">
+      <div class="detail-label">Overview</div>
+      <div class="detail-value">${esc(d.description)}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Top Routes</div>
+      ${tradeHtml}
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Origin Countries</div>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--space-1)">${d.origins.map(o=>`<span class="origin-tag">${esc(o)}</span>`).join("")}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Key Facts</div>
+      <div class="detail-value" style="display:grid;gap:2px">
+        <div><b>Exporter:</b> ${esc(d.topExporter||"—")}</div>
+        <div><b>Importer:</b> ${esc(d.topImporter||"—")}</div>
+        <div><b>Form:</b> ${esc(d.formLabel||"—")}</div>
+        <div><b>Habitat:</b> ${esc(d.habitat||"—")}</div>
+        <div><b>Weight:</b> ${esc(d.avgWeight||"—")}</div>
+        <div><b>Season:</b> ${esc(d.season||"—")}</div>
+        ${d.priceRange?`<div><b>Price Range:</b> $${d.priceRange[0]}–$${d.priceRange[1]}/kg</div>`:""}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* =====================================================
+   RENDER: TRADE TABLE
+===================================================== */
+function renderTradeTable() {
+  const data = filteredTrade();
+  const tbody = document.getElementById("tradeBody");
+  const countEl = document.getElementById("tradeRowCount");
+  if(countEl) countEl.textContent = `${data.length} records`;
+
+  const maxVol = Math.max(...data.map(d=>d.volumeKg));
+  tbody.innerHTML = data.map(d=>`
+    <tr>
+      <td><div class="species-badge">
+        <span class="species-dot" style="background:${SPECIES.find(s=>s.common===d.species||d.species.includes(s.common.split(" ")[0]))?.color||"#888"}"></span>
+        ${esc(d.species)}
+      </div></td>
+      <td>${esc(d.origin)}</td>
+      <td>${esc(d.destination)}</td>
+      <td>${getFormBadge(d.form)}</td>
+      <td class="num">
+        ${fmt(d.volumeKg)}
+        <div class="trade-row-bar" style="width:${Math.round(d.volumeKg/maxVol*80)}%;margin-top:2px"></div>
+      </td>
+      <td class="num">${fmtM(d.valueMillion)}</td>
+      <td class="num">$${d.pricePerKg}</td>
+      <td class="num">${d.marketSharePct}%</td>
+      <td class="num">${delta(d.yoyChangePct)}</td>
+      <td class="num">${d.year}</td>
+    </tr>`).join("");
+}
+
+/* =====================================================
+   RENDER: COUNTRY TABLES
+===================================================== */
+function renderCountryTables() {
+  const expBody = document.getElementById("exporterBody");
+  const impBody = document.getElementById("importerBody");
+
+  expBody.innerHTML = EXPORTERS.map(d=>`
+    <tr>
+      <td><span class="flag">${d.flag}</span> ${esc(d.country)}</td>
+      <td style="color:var(--color-text-muted);font-size:var(--text-xs)">${esc(d.topSpecies)}</td>
+      <td class="num">${fmt(d.totalVolumeTons)}</td>
+      <td class="num">${fmtB(d.totalValueBillion)}</td>
+      <td class="num">$${d.pricePerKgAvg}</td>
+      <td class="num">${d.shareOfGlobal}%</td>
+      <td class="num">${delta(d.yoyPct)}</td>
+    </tr>`).join("");
+
+  impBody.innerHTML = IMPORTERS.map(d=>`
+    <tr>
+      <td><span class="flag">${d.flag}</span> ${esc(d.country)}</td>
+      <td style="color:var(--color-text-muted);font-size:var(--text-xs)">${esc(d.topSpecies)}</td>
+      <td class="num">${fmt(d.totalVolumeTons)}</td>
+      <td class="num">${fmtB(d.totalValueBillion)}</td>
+      <td class="num">$${d.pricePerKgAvg}</td>
+      <td class="num">${d.shareOfGlobal}%</td>
+      <td class="num">${delta(d.yoyPct)}</td>
+    </tr>`).join("");
+
+  // Overview mini tables
+  const ovExpBody = document.getElementById("overviewExporterBody");
+  const ovImpBody = document.getElementById("overviewImporterBody");
+  if(ovExpBody) ovExpBody.innerHTML = EXPORTERS.slice(0,7).map(d=>`
+    <tr><td><span class="flag">${d.flag}</span> ${esc(d.country)}</td>
+    <td style="font-size:var(--text-xs);color:var(--color-text-muted)">${esc(d.topSpecies)}</td>
+    <td class="num">${fmt(d.totalVolumeTons)}</td>
+    <td class="num">${fmtB(d.totalValueBillion)}</td>
+    <td class="num">${delta(d.yoyPct)}</td></tr>`).join("");
+  if(ovImpBody) ovImpBody.innerHTML = IMPORTERS.slice(0,7).map(d=>`
+    <tr><td><span class="flag">${d.flag}</span> ${esc(d.country)}</td>
+    <td style="font-size:var(--text-xs);color:var(--color-text-muted)">${esc(d.topSpecies)}</td>
+    <td class="num">${fmt(d.totalVolumeTons)}</td>
+    <td class="num">${fmtB(d.totalValueBillion)}</td>
+    <td class="num">${delta(d.yoyPct)}</td></tr>`).join("");
+}
+
+/* =====================================================
+   CHARTS
+===================================================== */
+const chartInstances = {};
+function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}}
+
+function renderCharts() {
+  const c = getChartColors();
+  Chart.defaults.color = c.muted;
+  Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+  Chart.defaults.font.size = 11;
+
+  const tooltip = {
+    backgroundColor:c.bg,titleColor:c.text,bodyColor:c.muted,
+    borderColor:c.grid,borderWidth:1,padding:10
+  };
+
+  // Market size trend
+  if(document.getElementById("marketSizeChart")) {
+    destroyChart("marketSize");
+    chartInstances["marketSize"] = new Chart(
+      document.getElementById("marketSizeChart").getContext("2d"),{
+        type:"bar",
+        data:{
+          labels:MARKET_TREND.map(d=>d.year),
+          datasets:[
+            {type:"bar",label:"Value ($B)",data:MARKET_TREND.map(d=>d.valueBillion),backgroundColor:c.primary+"99",borderRadius:4,yAxisID:"y",order:2},
+            {type:"line",label:"Volume (M kg)",data:MARKET_TREND.map(d=>d.volumeMKg),borderColor:c.gold,backgroundColor:"transparent",tension:.4,pointRadius:3,yAxisID:"y2",order:1}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:"top",labels:{boxWidth:10,padding:10,color:c.text}},tooltip},
+          scales:{
+            y:{grid:{color:c.grid},ticks:{color:c.muted},title:{display:true,text:"Value ($B)",color:c.muted,font:{size:10}}},
+            y2:{position:"right",grid:{drawOnChartArea:false},ticks:{color:c.muted},title:{display:true,text:"Volume (M kg)",color:c.muted,font:{size:10}}}
+          }
+        }
+      }
+    );
+  }
+
+  // Species value chart
+  if(document.getElementById("speciesValueChart")) {
+    destroyChart("speciesValue");
+    const top8 = SPECIES.filter(d=>d.totalValueBillion).sort((a,b)=>b.totalValueBillion-a.totalValueBillion).slice(0,8);
+    chartInstances["speciesValue"] = new Chart(
+      document.getElementById("speciesValueChart").getContext("2d"),{
+        type:"bar",
+        data:{
+          labels:top8.map(d=>d.common.replace(" Crab","").replace(" (Opilio)","")),
+          datasets:[{
+            label:"Trade Value ($B)",
+            data:top8.map(d=>d.totalValueBillion),
+            backgroundColor:top8.map(d=>d.color+"cc"),
+            borderRadius:5,borderSkipped:false,maxBarThickness:40
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,indexAxis:"y",
+          plugins:{legend:{display:false},tooltip},
+          scales:{
+            x:{grid:{color:c.grid},ticks:{color:c.muted}},
+            y:{grid:{color:c.grid,drawBorder:false},ticks:{color:c.text,font:{size:10}}}
+          }
+        }
+      }
+    );
+  }
+
+  // Price trend
+  if(document.getElementById("priceTrendChart")) {
+    destroyChart("priceTrend");
+    chartInstances["priceTrend"] = new Chart(
+      document.getElementById("priceTrendChart").getContext("2d"),{
+        type:"line",
+        data:{
+          labels:PRICE_TREND.map(d=>d.month),
+          datasets:[
+            {label:"Red King Crab",data:PRICE_TREND.map(d=>d.redKing),borderColor:"#ef4444",backgroundColor:"transparent",tension:.4,pointRadius:2},
+            {label:"Snow Crab",data:PRICE_TREND.map(d=>d.snow),borderColor:c.blue,backgroundColor:"transparent",tension:.4,pointRadius:2},
+            {label:"Dungeness",data:PRICE_TREND.map(d=>d.dungeness),borderColor:c.orange,backgroundColor:"transparent",tension:.4,pointRadius:2},
+            {label:"Blue Swimming",data:PRICE_TREND.map(d=>d.blueSw),borderColor:c.primary,backgroundColor:"transparent",tension:.4,pointRadius:2},
+            {label:"Mud Crab",data:PRICE_TREND.map(d=>d.mudCrab),borderColor:c.success,backgroundColor:"transparent",tension:.4,pointRadius:2}
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:"top",labels:{boxWidth:10,padding:12,color:c.text}},tooltip},
+          scales:{
+            x:{grid:{color:c.grid},ticks:{color:c.muted,maxRotation:45}},
+            y:{grid:{color:c.grid},ticks:{color:c.muted,callback:v=>"$"+v},title:{display:true,text:"$/kg",color:c.muted,font:{size:10}}}
+          }
+        }
+      }
+    );
+  }
+
+  // Exporter share donut
+  if(document.getElementById("exporterShareChart")) {
+    destroyChart("exporterShare");
+    const top6exp = EXPORTERS.slice(0,6);
+    const palette = [c.error,c.blue,c.primary,c.orange,c.warning,c.purple];
+    chartInstances["exporterShare"] = new Chart(
+      document.getElementById("exporterShareChart").getContext("2d"),{
+        type:"doughnut",
+        data:{
+          labels:top6exp.map(d=>d.country),
+          datasets:[{data:top6exp.map(d=>d.shareOfGlobal),backgroundColor:palette,borderColor:c.bg,borderWidth:3,hoverOffset:5}]
+        },
+        options:{responsive:true,maintainAspectRatio:false,cutout:"58%",
+          plugins:{legend:{position:"right",labels:{boxWidth:10,padding:10,color:c.text,font:{size:11}}},tooltip,
+            title:{display:true,text:"% of global export volume",color:c.muted,font:{size:10}}
+          }
+        }
+      }
+    );
+  }
+
+  // Importer share donut
+  if(document.getElementById("importerShareChart")) {
+    destroyChart("importerShare");
+    const top6imp = IMPORTERS.slice(0,6);
+    const palette2 = [c.error,c.warning,c.blue,c.gold,c.teal,c.pink];
+    chartInstances["importerShare"] = new Chart(
+      document.getElementById("importerShareChart").getContext("2d"),{
+        type:"doughnut",
+        data:{
+          labels:top6imp.map(d=>d.country),
+          datasets:[{data:top6imp.map(d=>d.shareOfGlobal),backgroundColor:palette2,borderColor:c.bg,borderWidth:3,hoverOffset:5}]
+        },
+        options:{responsive:true,maintainAspectRatio:false,cutout:"58%",
+          plugins:{legend:{position:"right",labels:{boxWidth:10,padding:10,color:c.text,font:{size:11}}},tooltip,
+            title:{display:true,text:"% of global import volume",color:c.muted,font:{size:10}}
+          }
+        }
+      }
+    );
+  }
+}
+
+/* =====================================================
+   VIEW / TAB SWITCHING
+===================================================== */
+function switchView(view) {
+  state.activeView = view;
+  document.querySelectorAll(".nav-item[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===view));
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+view));
+  const titles = {
+    overview:"International Crab Export / Import Dashboard",
+    species:"Species & HTS Reference — 16 Species",
+    trade:"Trade Flow Records",
+    countries:"Top Exporters & Importers",
+    prices:"Price Trends — 2024/2025"
+  };
+  document.getElementById("mainTitle").textContent = titles[view]||titles.overview;
+  setTimeout(renderCharts, 50);
+}
+
+/* =====================================================
+   SORT HELPERS
+===================================================== */
+function attachSort(tableId, rows, callback, stateKey, stateDirKey) {
+  document.querySelectorAll(`#${tableId} thead th[data-col]`).forEach(th=>{
+    th.addEventListener("click",()=>{
+      const col = th.dataset.col;
+      if(state[stateKey]===col) state[stateDirKey] = state[stateDirKey]==="asc"?"desc":"asc";
+      else { state[stateKey]=col; state[stateDirKey]="asc"; }
+      document.querySelectorAll(`#${tableId} thead th`).forEach(h=>h.classList.remove("sort-asc","sort-desc"));
+      th.classList.add(state[stateDirKey]==="asc"?"sort-asc":"sort-desc");
+      callback();
+    });
+  });
+}
+
+/* =====================================================
+   EVENT LISTENERS
+===================================================== */
+// View nav
+document.querySelectorAll("[data-view]").forEach(b=>{
+  b.addEventListener("click",()=>switchView(b.dataset.view));
+});
+// Tab bar
+document.querySelectorAll(".tab[data-tab]").forEach(t=>{
+  t.addEventListener("click",()=>switchView(t.dataset.tab));
+});
+// Species filter chips
+document.querySelectorAll("[data-sp-filter]").forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    state.spFilter = chip.dataset.spFilter;
+    state.selectedId = null;
+    document.querySelectorAll("[data-sp-filter]").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    renderSpeciesTable(); renderDetail();
+  });
+});
+// Sidebar category filters → switch to species tab
+document.querySelectorAll("[data-filter]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    state.spFilter = b.dataset.filter;
+    state.selectedId = null;
+    switchView("species");
+    document.querySelectorAll("[data-sp-filter]").forEach(c=>c.classList.toggle("active",c.dataset.spFilter===b.dataset.filter));
+    renderSpeciesTable(); renderDetail();
+  });
+});
+// Trade flow filter chips
+document.querySelectorAll("[data-tf-filter]").forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    state.tfFilter = chip.dataset.tfFilter;
+    document.querySelectorAll("[data-tf-filter]").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    renderTradeTable();
+  });
+});
+// Search
+document.getElementById("sidebarSearch").addEventListener("input",e=>{
+  state.search = e.target.value.trim();
+  state.selectedId = null;
+  renderSpeciesTable(); renderDetail(); renderTradeTable();
+});
+// Sort — species
+attachSort("speciesTable", null, ()=>{renderSpeciesTable();}, "spSort","spSortDir");
+// Sort — trade
+attachSort("tradeTable", null, ()=>{renderTradeTable();}, "trSort","trSortDir");
+
+// Export CSV
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const headers = ["Common Name","Latin Name","HTS Code","Category","Avg$/kg","Volume(kt)","Value($B)","Top Exporter","Top Importer","Form","Sustainability","YoY%"];
+  const rows = SPECIES.map(d=>[
+    `"${d.common}"`,`"${d.latin}"`,d.hts||"",d.categoryLabel,
+    d.avgPricePerKg||"",d.globalVolumeKTons||"",d.totalValueBillion||"",
+    `"${d.topExporter||""}"`,`"${d.topImporter||""}"`,
+    d.formLabel,d.sustainability||"",d.yoyPct!=null?d.yoyPct:""
+  ].join(","));
+  const blob = new Blob([[headers.join(","),...rows].join("\n")],{type:"text/csv"});
+  const a = Object.assign(document.createElement("a"),{href:URL.createObjectURL(blob),download:"crab-trade-data.csv"});
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+// Theme toggle
+(function(){
+  const t=document.querySelector("[data-theme-toggle]"),r=document.documentElement;
+  let d=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+  r.setAttribute("data-theme",d);
+  function icon(th){return th==="dark"?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;}
+  if(t){t.innerHTML=icon(d);t.addEventListener("click",()=>{d=d==="dark"?"light":"dark";r.setAttribute("data-theme",d);t.innerHTML=icon(d);setTimeout(renderCharts,50);});}
+})();
+
+/* =====================================================
+   INIT
+===================================================== */
+renderSpeciesTable();
+renderDetail();
+renderTradeTable();
+renderCountryTables();
+renderCharts();
+</script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
